@@ -4,6 +4,8 @@ let playerLife = 100;
 let playerWeapon;
 let playerArmor;
 let gameMasterLife = 150;
+let gmArmor = 4;
+let gmWeapon = 6;
 
 const WOOD = "bois";
 const IRON = "fer";
@@ -29,13 +31,61 @@ function foundItems(array, item) {
   return false;
 }
 
-while (!foundItems(weapon, playerWeapon) || !foundItems(armor, playerArmor)) {
-  playerWeapon = prompt(
-    `Choisissez votre arme : bois (inflige 2 dégats), fer (inflige 5 dégâts) ou magique (inflige 10 dégâts)`
-  );
-  playerArmor = prompt(
-    `Choisissez votre armure : bois (protection 1 dégat), fer (protection 3 dégâts) ou magique (protection 5 dégâts)`
-  );
+function findDamage(array, item) {
+  for (let i = 0; i < array.length; i++) {
+    if (array[i][0] == item) {
+      return array[i][1];
+    }
+  }
 }
 
-function Attack() {}
+function round() {
+  let attack;
+  let damage;
+  attack = findDamage(armor, playerArmor) - gmWeapon;
+  if (Math.sign(attack) > 0) {
+    console.log(
+      `Le maître du donjon vous a ataqué. Aucun dégât vous a été infligé. Il vous reste ${playerLife} points de vie.`
+    );
+  } else {
+    damage = Math.abs(attack);
+    playerLife -= damage;
+    console.log(
+      `Le maître du donjon vous a infligé ${damage} dégâts. Il vous reste ${playerLife} points de vie.`
+    );
+  }
+  damage = 0;
+  attack = 0;
+  attack = gmArmor - findDamage(weapon, playerWeapon);
+  if (Math.sign(attack) > 0) {
+    console.log(
+      `Vous avez attaqué le maître du donjon. Aucun dégât ne lui a été infligé. Il lui reste ${gameMasterLife} points de vie.`
+    );
+  } else {
+    damage = Math.abs(attack);
+    gameMasterLife -= damage;
+    console.log(
+      `Vous avez attaqué le maître du donjon. Vous lui avez infligé ${damage} dégât. Il lui reste ${gameMasterLife} points de vie.`
+    );
+  }
+  damage = 0;
+  attack = 0;
+}
+
+while (gameMasterLife > 0 && playerLife > 0) {
+  while (!foundItems(weapon, playerWeapon) || !foundItems(armor, playerArmor)) {
+    playerWeapon = prompt(
+      `Choisissez votre arme : bois (inflige 2 dégats), fer (inflige 5 dégâts) ou magique (inflige 10 dégâts)`
+    );
+    playerArmor = prompt(
+      `Choisissez votre armure : bois (protection 1 dégat), fer (protection 3 dégâts) ou magique (protection 5 dégâts)`
+    );
+  }
+  round();
+}
+
+if (gameMasterLife <= 0) {
+  console.log("Félicitations vous avez gagné");
+} else {
+  console.log(`Vous avez perdu`);
+}
