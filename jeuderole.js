@@ -83,9 +83,11 @@ while (gameMasterLife > 0 && playerLife > 0) {
     playerWeapon = prompt(
       `Choisissez votre arme : bois (inflige 2 dégats), fer (inflige 5 dégâts) ou magique (inflige 10 dégâts)`
     );
+    playerWeapon = playerWeapon.toLowerCase();
     playerArmor = prompt(
       `Choisissez votre armure : bois (protection 1 dégat), fer (protection 3 dégâts) ou magique (protection 5 dégâts)`
     );
+    playerArmor = playerArmor.toLowerCase();
   }
   if (gameMasterLife > 0 && playerLife > 0) {
     attackGm();
