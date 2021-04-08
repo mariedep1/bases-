@@ -39,7 +39,7 @@ function findDamage(array, item) {
   }
 }
 
-function round() {
+function attackGm() {
   let attack;
   let damage;
   attack = findDamage(armor, playerArmor) - gmWeapon;
@@ -56,22 +56,28 @@ function round() {
   }
   damage = 0;
   attack = 0;
-  attack = gmArmor - findDamage(weapon, playerWeapon);
-  if (Math.sign(attack) > 0) {
-    console.log(
-      `Vous avez attaqué le maître du donjon. Aucun dégât ne lui a été infligé. Il lui reste ${gameMasterLife} points de vie.`
-    );
-  } else {
-    damage = Math.abs(attack);
-    gameMasterLife -= damage;
-    console.log(
-      `Vous avez attaqué le maître du donjon. Vous lui avez infligé ${damage} dégât. Il lui reste ${gameMasterLife} points de vie.`
-    );
-  }
-  damage = 0;
-  attack = 0;
 }
 
+function attackPlayer() {
+  let attack;
+  let damage;
+  attack = gmArmor - findDamage(weapon, playerWeapon);
+  if (playerLife > 0) {
+    if (Math.sign(attack) > 0) {
+      console.log(
+        `Vous avez attaqué le maître du donjon. Aucun dégât ne lui a été infligé. Il lui reste ${gameMasterLife} points de vie.`
+      );
+    } else {
+      damage = Math.abs(attack);
+      gameMasterLife -= damage;
+      console.log(
+        `Vous avez attaqué le maître du donjon. Vous lui avez infligé ${damage} dégât. Il lui reste ${gameMasterLife} points de vie.`
+      );
+    }
+    damage = 0;
+    attack = 0;
+  }
+}
 while (gameMasterLife > 0 && playerLife > 0) {
   while (!foundItems(weapon, playerWeapon) || !foundItems(armor, playerArmor)) {
     playerWeapon = prompt(
@@ -81,11 +87,13 @@ while (gameMasterLife > 0 && playerLife > 0) {
       `Choisissez votre armure : bois (protection 1 dégat), fer (protection 3 dégâts) ou magique (protection 5 dégâts)`
     );
   }
-  round();
+  if (gameMasterLife > 0 && playerLife > 0) {
+    attackGm();
+    attackPlayer();
+  }
 }
-
-if (gameMasterLife <= 0) {
-  console.log("Félicitations vous avez gagné");
-} else {
-  console.log(`Vous avez perdu`);
+if (gameMasterLife > 0 && playerLife <= 0) {
+  console.log("Vous avez perdu");
+} else if (gameMasterLife <= 0 && playerLife > 0) {
+  console.log("vous avez gagné");
 }
