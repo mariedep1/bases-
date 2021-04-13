@@ -5,12 +5,38 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>A l'aventure ! </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
+    <main>
+        <h1>A l'aventure Compagnon !</h1>
+        <div id="game" class="d-flex flex-column justify-content-center">
+            <h2 class="text-justify text-uppercase">Bienvenue dans cet humble jeu de role aventurier, prends ton épée,
+                ton armure et
+                part poutrer des mechants. Que
+                l'aventure commence !</h2>
+            <h3 class="text-center mt-5">Commence par choisir ton Equipement Aventurier : </h3>
+            <form action="" class="mt-5" id="equipement">
+                <div>
+                    <input type="radio" name="weapon" id="radio-1" value="bois">
+                    <label for="radio-1" class="btn text-uppercase">Arme en bois</label>
+                    <input type="radio" name="weapon" id="radio-1" value="fer">
+                    <label for="radio-1" class="btn text-uppercase">Arme en fer</label>
+                    <input type="radio" name="weapon" id="radio-1" value="magique">
+                    <label for="radio-1" class="btn text-uppercase">Arme magique</label>
+                </div>
+            </form>
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+        crossorigin="anonymous"></script>
     <script type="text/javascript" src="jeuderole.js">
-
     </script>
 
 </body>

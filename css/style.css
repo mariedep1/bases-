@@ -1,0 +1,73 @@
+/****************
+******FONTS******
+****************/
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+
+/****************
+***CSS GENERAL***
+****************/
+body {
+  background-color: black;
+  color: white;
+  font-family: "Press Start 2P", cursive;
+}
+
+/****************
+***CSS CLASSES***
+****************/
+.btn {
+  margin: 0 auto;
+  padding: 8px 20px;
+  background-color: white;
+}
+.btn:hover,
+#equipement div input[type="radio"]:checked + label {
+  background-color: blueviolet;
+  color: white;
+}
+/****************
+*CSS PAR SECTION*
+****************/
+/*** MAIN ***/
+main {
+  text-align: center;
+}
+
+main h1 {
+  white-space: nowrap;
+  overflow: hidden;
+  margin: 40px auto;
+  animation: animated-text 2s steps(30, end) 1s 1 normal both;
+}
+
+#game {
+  border: 3px solid white;
+  min-height: 400px;
+  padding: 0 70px;
+}
+
+#game h2 {
+  margin-bottom: 30px;
+  line-height: 300%;
+}
+
+#equipement div input[type="radio"] {
+  display: none;
+}
+
+#equipement div label.btn {
+  margin-left: 30px;
+}
+/****************
+*****Animation***
+****************/
+
+/* animation typed text */
+@keyframes animated-text {
+  from {
+    width: 0;
+  }
+  to {
+    width: 770px;
+  }
+}
