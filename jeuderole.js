@@ -78,9 +78,6 @@ form.addEventListener("submit", (event) => {
     }
   }
   game.removeChild(form);
-  console.log(adventurer.armor);
-  console.log(adventurer);
-  console.log(dungeonMaster);
 
   // Phase de combat
   let newEl = document.createElement("h2");
@@ -115,16 +112,19 @@ function attack() {
       if (damages <= 0) {
         let newLi = document.createElement("li");
         newLi.innerHTML = `Le maître du jeu t'a attaqué. Pfffiou, il ne t'a pas fait de dégâts. Il te reste ${adventurer.hp}`;
+        newLi.classList.add("mb-5");
         game.appendChild(newLi);
       } else {
         adventurer.hp -= damages;
         let newLi = document.createElement("li");
         newLi.innerHTML = `Le maître du jeu t'a attaqué. Aïe, il ne t'a pas raté. Il t'inflige ${damages}. Il te reste ${adventurer.hp}`;
+        newLi.classList.add("mb-5");
         game.appendChild(newLi);
       }
       whoPlay++;
       if (adventurer.hp <= 0) {
         winnerText.textContent = "Tu t'es fais dégommé aventurier, dommage !";
+        winnerText.classList.add("fs-1");
         game.appendChild(winnerText);
       }
     } else {
@@ -133,17 +133,20 @@ function attack() {
       if (damages <= 0) {
         let newLi = document.createElement("li");
         newLi.innerHTML = `Tu as attaqué le maître du donjon. Pas de chance, tu as fait 0 dégâts. Il lui reste ${dungeonMaster.hp}`;
+        newLi.classList.add("mb-5", "textPlayer");
         game.appendChild(newLi);
       } else {
         dungeonMaster.hp -= damages;
         let newLi = document.createElement("li");
         newLi.innerHTML = `Tu as attaqué le maître du donjon. Super, tu l'as touché. Tu lui infliges ${damages}. Il lui reste ${dungeonMaster.hp}`;
+        newLi.classList.add("mb-5", "textPlayer");
         game.appendChild(newLi);
       }
       whoPlay++;
       if (dungeonMaster.hp <= 0) {
         winnerText.textContent =
-          "Nom d'une chaise en pain d'épice ! Tu as réussi à le battre";
+          "Nom d'une chaise en pain d'épices ! Tu as réussi à le battre";
+        winnerText.classList.add("fs-1");
         game.appendChild(winnerText);
       }
     }
