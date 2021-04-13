@@ -9,7 +9,6 @@ let adventurer = {
   armor: "",
   weapon: "",
   gold: 100,
-  potions: "",
 };
 
 let dungeonMaster = {
@@ -33,94 +32,120 @@ let armor = [
   [MAGIC, 7, 50],
 ];
 
-// TABLEAU MULTI-DIMENSIONNEL AVEC LE TYPE DE POTIONS, SES POINTS HEAL OU DÉGÂTS ET SON COÛT
-// let potions = [
-//   ["potion de soin", 10, 15],
-//   ["potion de feu", 10, 20],
-// ];
-
 // ON INITIALISE LE MAITRE DU DONJON
 function randomCalcul(x, y) {
   return x + Math.floor(Math.random() * y);
 }
-dungeonMaster.hp = randomCalcul(100, 100);
+dungeonMaster.hp = randomCalcul(125, 50);
 dungeonMaster.armor = randomCalcul(3, 5);
 dungeonMaster.weapon = randomCalcul(4, 7);
 dungeonMaster.gold = randomCalcul(15, 35);
 
-// APPARITION DU TEXTE DE DEBUT
-
 // ON LANCE L'AVENTURE
+let game = document.querySelector("div#game");
+let beginText = document.querySelector("div#game h2");
+let beginButton = document.getElementById("adventure");
+
+beginButton.addEventListener("click", function () {
+  let x = document.querySelector(".visibility");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    game.removeChild(beginButton);
+    game.removeChild(beginText);
+  } else {
+    x.style.display = "none";
+  }
+});
 
 //ON DEMANDE AU JOUEUR DE CHOISIR SON EQUIPEMENT
 
-// Fonction pour vérifier l'item existe dans le tableau
-function foundItems(array, item) {
-  for (let i = 0; i < array.length; i++) {
-    if (array[i][0] == item) {
-      return true;
+let form = document.querySelector("form#equipement");
+let chosenArmor;
+let chosenWeapon;
+let radioWeapon = document.getElementsByName("weapon");
+let radioArmor = document.getElementsByName("armor");
+
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  for (let i = 0; i < 3; i++) {
+    if (radioWeapon[i].checked) {
+      chosenWeapon = radioWeapon[i].value;
+      adventurer.weapon = findDamage(weapon, chosenWeapon);
+    }
+    if (radioArmor[i].checked) {
+      chosenArmor = radioArmor[i].value;
+      adventurer.armor = findDamage(armor, chosenArmor);
     }
   }
-  return false;
-}
+  game.removeChild(form);
+  console.log(adventurer.armor);
+  console.log(adventurer);
+  console.log(dungeonMaster);
 
-// Fonction pour rechercher une des caratéristiques (points ou coûts) de l'item dans le tableau
-function itemFeature(array, item, x) {
+  // Phase de combat
+  let newEl = document.createElement("h2");
+  newEl.textContent = "Le Combat commence";
+  newEl.classList.add("mt-5");
+  game.appendChild(newEl);
+  attack();
+});
+
+//LES FONCTIONS
+function findDamage(array, item) {
   for (let i = 0; i < array.length; i++) {
-    if (array[i][0] == item) {
-      return array[i][x];
+    if (array[i][0] === item) {
+      return array[i][1];
     }
   }
 }
 
-// Fonction pour rechercher le coût le plus petit dans le tableau
-function findMinCost(array) {
-  let temp = array[0][2];
-  for (let i = 0; i < array.length; i++) {
-    if (array[i][2] < temp) {
-      temp = array[i][2];
+function attack() {
+  let whoPlay = 1;
+  let fightLog = document.createElement("ol");
+  game.appendChild(fightLog);
+  let winnerText = document.createElement("h2");
+  let damages;
+  let attack;
+
+  while (dungeonMaster.hp > 0 && adventurer.hp > 0) {
+    if (whoPlay % 2 != 0) {
+      attack = randomCalcul(1, dungeonMaster.weapon);
+      damages = attack - adventurer.armor;
+
+      if (damages <= 0) {
+        let newLi = document.createElement("li");
+        newLi.innerHTML = `Le maître du jeu t'a attaqué. Pfffiou, il ne t'a pas fait de dégâts. Il te reste ${adventurer.hp}`;
+        game.appendChild(newLi);
+      } else {
+        adventurer.hp -= damages;
+        let newLi = document.createElement("li");
+        newLi.innerHTML = `Le maître du jeu t'a attaqué. Aïe, il ne t'a pas raté. Il t'inflige ${damages}. Il te reste ${adventurer.hp}`;
+        game.appendChild(newLi);
+      }
+      whoPlay++;
+      if (adventurer.hp <= 0) {
+        winnerText.textContent = "Tu t'es fais dégommé aventurier, dommage !";
+        game.appendChild(winnerText);
+      }
+    } else {
+      attack = randomCalcul(1, adventurer.weapon);
+      damages = attack - dungeonMaster.armor;
+      if (damages <= 0) {
+        let newLi = document.createElement("li");
+        newLi.innerHTML = `Tu as attaqué le maître du donjon. Pas de chance, tu as fait 0 dégâts. Il lui reste ${dungeonMaster.hp}`;
+        game.appendChild(newLi);
+      } else {
+        dungeonMaster.hp -= damages;
+        let newLi = document.createElement("li");
+        newLi.innerHTML = `Tu as attaqué le maître du donjon. Super, tu l'as touché. Tu lui infliges ${damages}. Il lui reste ${dungeonMaster.hp}`;
+        game.appendChild(newLi);
+      }
+      whoPlay++;
+      if (dungeonMaster.hp <= 0) {
+        winnerText.textContent =
+          "Nom d'une chaise en pain d'épice ! Tu as réussi à le battre";
+        game.appendChild(winnerText);
+      }
     }
-    return temp;
   }
 }
-
-// Choix de l'arme du joueur
-// let chosenWeapon = null;
-// while (!foundItems(weapon, chosenWeapon)) {
-//   chosenWeapon = prompt(
-//     `Choisissez votre arme : bois (coût ${weapon[0][2]} gold) , fer (coût ${weapon[1][2]}) gold ou magique (coût ${weapon[2][2]} gold)`
-//   );
-//   chosenWeapon = chosenWeapon.toLowerCase();
-// }
-// adventurer.weapon = weapon[chosenWeapon];
-// let cost = adventurer.gold - itemFeature(weapon, chosenWeapon, 2);
-// adventurer.gold = cost;
-
-// // Choix de l'armure du joueur
-// let chosenArmor = null;
-// while (!foundItems(armor, chosenArmor)) {
-//   chosenArmor = prompt(
-//     `Choisissez votre armure : bois (coût ${armor[0][2]} gold) , fer (coût ${armor[1][2]}) gold ou magique (coût ${armor[2][2]} gold)`
-//   );
-//   chosenArmor = chosenArmor.toLowerCase();
-// }
-// adventurer.armor = armor[chosenArmor];
-// cost -= itemFeature(armure, chosenArmor, 2);
-// adventurer.gold = cost;
-
-// // Choix de position si le joueur a assez de gold
-// let chosenPotions;
-// let healingPotionCount;
-// let firePotionCount;
-
-// while (cost > findMinCost(potions) && chosenPotions != "aucune") {
-//   chosenPotions = prompt(
-//     `Vous pouvez acheter des potions : potion de soin vous rajoute 10 points de vie (coût ${potions[0][2]} gold) ou potion de feu qui fait 10 points de dégâts(coût ${potions[1][2]}) gold ou aucune`
-//   );
-//   chosenPotions = chosenPotions.toLowerCase();
-//   if (chosenPotions == potions[0][0]) {
-//     healingPotionCount += 1;
-//   } else if (chosenPotions == potions[1][0]) {
-//     firePotionCount += 1;
-//   }
-// }

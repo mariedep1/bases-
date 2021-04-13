@@ -40,10 +40,11 @@ main h1 {
   animation: animated-text 2s steps(30, end) 1s 1 normal both;
 }
 
+/* DIV GAME */
 #game {
   border: 3px solid white;
   min-height: 400px;
-  padding: 0 70px;
+  padding: 20px 70px;
 }
 
 #game h2 {
@@ -51,12 +52,20 @@ main h1 {
   line-height: 300%;
 }
 
+/* FORM */
 #equipement div input[type="radio"] {
   display: none;
 }
 
 #equipement div label.btn {
-  margin-left: 30px;
+  margin-left: 20px;
+}
+
+form p {
+  margin-top: 50px;
+}
+form {
+  display: none;
 }
 /****************
 *****Animation***
