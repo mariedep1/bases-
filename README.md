@@ -5,5 +5,5 @@ Les textes des coups tour par tour apparaissent tous en même temps.
 
 
 
-# Déploement 
+# Déploiement 
 https://alaventure.netlify.app/
