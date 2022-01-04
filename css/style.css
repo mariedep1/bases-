@@ -36,18 +36,14 @@ main {
   text-align: center;
 }
 
-main h1 {
-  white-space: nowrap;
-  overflow: hidden;
-  margin: 40px auto;
-  animation: animated-text 2s steps(30, end) 1s 1 normal both;
-}
-
 /* DIV GAME */
 #game {
   border: 3px solid white;
   min-height: 400px;
+  width: auto;
   padding: 20px 70px;
+  width: 80%;
+  margin: auto;
 }
 
 #game h2 {
@@ -75,11 +71,21 @@ form {
 ****************/
 
 /* animation typed text */
-@keyframes animated-text {
-  from {
-    width: 0;
+
+@media (max-width: 768px) {
+  #game {
+    min-height: 100px;
   }
-  to {
-    width: 770px;
+  main h1 {
+    font-size: 15px;
+    word-wrap: break-word;
+    white-space: normal;
+    line-height: 150%;
+  }
+  #game {
+    padding: 5px 20px;
+  }
+  #game h2 {
+    font-size: 10px;
   }
 }

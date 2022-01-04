@@ -1,11 +1,25 @@
 "use strict";
 
+//APPARITION DU TITRE DU MINI JEU
+let i = 0;
+const txt = "A l'aventure Compagnon !"; /* The text */
+const speed = 50; /* The speed/duration of the effect in milliseconds */
+
+function typeWriter() {
+  if (i < txt.length) {
+    document.querySelector("#gameTitle").innerHTML += txt.charAt(i);
+    i++;
+    setTimeout(typeWriter, speed);
+  }
+}
+typeWriter();
+
 const WOOD = "bois";
 const IRON = "fer";
 const MAGIC = "magique";
 
 let adventurer = {
-  hp: 100,
+  hp: "",
   armor: "",
   weapon: "",
   gold: 100,
@@ -22,13 +36,13 @@ let dungeonMaster = {
 let weapon = [
   [WOOD, 2, 10],
   [IRON, 5, 20],
-  [MAGIC, 10, 50],
+  [MAGIC, 7, 50],
 ];
 
 // TABLEAU MULTI-DIMENSIONNEL AVEC LE TYPE D'ARMURE, SES POINTS DE DÉFENSE ET SON COÛT
 let armor = [
   [WOOD, 3, 10],
-  [IRON, 6, 20],
+  [IRON, 5, 20],
   [MAGIC, 7, 50],
 ];
 
@@ -38,17 +52,19 @@ function randomCalcul(x, y) {
 }
 dungeonMaster.hp = randomCalcul(125, 50);
 dungeonMaster.armor = randomCalcul(3, 5);
-dungeonMaster.weapon = randomCalcul(4, 7);
+dungeonMaster.weapon = randomCalcul(4, 9);
 dungeonMaster.gold = randomCalcul(15, 35);
 
 // ON LANCE L'AVENTURE
 let game = document.querySelector("div#game");
 let beginText = document.querySelector("div#game h2");
-let beginButton = document.getElementById("adventure");
+let beginButton = document.querySelector("#adventure");
+adventurer.hp = randomCalcul(100, 25);
 
-beginButton.addEventListener("click", function () {
+beginButton.addEventListener("click", () => {
   let x = document.querySelector(".visibility");
-  if (x.style.display === "none") {
+  if (x.style.display == "") {
+    console.log("je suis un clic");
     x.style.display = "block";
     game.removeChild(beginButton);
     game.removeChild(beginText);
@@ -78,11 +94,11 @@ form.addEventListener("submit", (event) => {
     }
   }
   game.removeChild(form);
-
+  console.log(dungeonMaster);
   // Phase de combat
   let newEl = document.createElement("h2");
   newEl.textContent = "Le Combat commence";
-  newEl.classList.add("mt-5");
+  newEl.classList.add("mt-5", "fs-1");
   game.appendChild(newEl);
   attack();
 });
@@ -103,10 +119,13 @@ function attack() {
   let winnerText = document.createElement("h2");
   let damages;
   let attack;
+  let limitAttack;
 
   while (dungeonMaster.hp > 0 && adventurer.hp > 0) {
     if (whoPlay % 2 != 0) {
-      attack = randomCalcul(1, dungeonMaster.weapon);
+      limitAttack = dungeonMaster.weapon - 1;
+      attack = randomCalcul(1, limitAttack);
+      console.log(attack);
       damages = attack - adventurer.armor;
 
       if (damages <= 0) {
@@ -128,7 +147,8 @@ function attack() {
         game.appendChild(winnerText);
       }
     } else {
-      attack = randomCalcul(1, adventurer.weapon);
+      limitAttack = adventurer.weapon - 1;
+      attack = randomCalcul(1, limitAttack);
       damages = attack - dungeonMaster.armor;
       if (damages <= 0) {
         let newLi = document.createElement("li");
